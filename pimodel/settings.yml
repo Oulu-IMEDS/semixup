@@ -1,0 +1,34 @@
+train:
+  data_provider:
+    unlabeled_train:
+      cate: AugmentedGroupSampler
+      num_samples: 1
+      data_key: "data"
+      target_key:
+        - "logits"
+        - "name"
+    labeled_train:
+      cate: ItemLoader
+      num_samples: 1
+      data_key: "data"
+      target_key:
+        - "target"
+        - "name"
+
+eval:
+  data_provider:
+    labeled_eval:
+      cate: ItemLoader
+      num_samples: 1
+      data_key: "data"
+      target_key:
+        - "target"
+        - "name"
+
+    #unlabeled_eval:
+    #  cate: AugmentedGroupSampler
+    #  num_samples: 1
+    #  data_key: "data"
+    #  target_key:
+    #    - "logits"
+    #    - "name"
