@@ -36,6 +36,7 @@ Training/validation data: the Osteoarthritis Initiative (OAI, https://nda.nih.go
 Independent test data: the Multicenter Osteoarthritis Study (MOST, http://most.ucsf.edu/)
 
 The script below:
+ - crops lateral and medial sides of all knee images,
  - divides OAI data into labeled and unlabeled parts, and splits each of them into 5 folds,
  - prepares the full OAI data setting,
  - processes and cleans MOST data for evaluation.
@@ -43,6 +44,13 @@ The script below:
 ```bash
 cd scripts/
 ./prepare_data.sh
+```
+Default arguments assume the following directory structure
+```
+data/
+├── MOST_OAI_FULL_0_2           # Preprocessed whole knee images
+├── X-Ray_Image_Assessments_SAS # OAI metadata
+└── most_meta                   # MOST metadata
 ```
 
 ## Training and Evaluation
