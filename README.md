@@ -17,6 +17,7 @@ _Semixup_ is a semi-supervised learning method based on in/out-of-manifold regul
 Create a virtual environment using `conda`
 ```bash
 conda create -n semixup python=3.7
+conda activate semixup
 ```
 Install Collagen framework (v0.0.1) by
 ```bash
