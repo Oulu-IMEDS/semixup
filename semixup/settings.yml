@@ -1,0 +1,32 @@
+train:
+  data_provider:
+    unlabeled_train:
+      cate: SemixupSampler
+      num_samples: 1
+      data_key: "mixup_data"
+      target_key:
+        - "logits"
+        - "logits_aug"
+        - "logits_mixup"
+        - "alpha"
+        - "name"
+    labeled_train:
+      cate: SemixupSampler
+      num_samples: 1
+      data_key: "mixup_data"
+      target_key:
+        - "logits_mixup"
+        - "target"
+        - "target_bg"
+        - "alpha"
+        - "name"
+
+eval:
+  data_provider:
+    labeled_eval:
+      cate: ItemLoader
+      num_samples: 1
+      data_key: "data"
+      target_key:
+        - "target"
+        - "name"
