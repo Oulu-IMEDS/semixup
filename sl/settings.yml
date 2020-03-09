@@ -1,0 +1,14 @@
+train:
+  data_provider:
+    data_train:
+      cate: ItemLoader
+      num_samples: 1
+      data_key: "data"
+      target_key: "target"
+eval:
+  data_provider:
+    data_eval:
+      cate: ItemLoader
+      num_samples: 1
+      data_key: "data"
+      target_key: "target"
