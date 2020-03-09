@@ -36,7 +36,7 @@ Training/validation data: the Osteoarthritis Initiative (OAI, https://nda.nih.go
 Independent test data: the Multicenter Osteoarthritis Study (MOST, http://most.ucsf.edu/)
 
 The script below:
- - divides OAI data into labeled and unlabeled parts, and split each of them into 5 folds,
+ - divides OAI data into labeled and unlabeled parts, and splits each of them into 5 folds,
  - prepares the full OAI data setting,
  - processes and cleans MOST data for evaluation.
 
@@ -46,7 +46,7 @@ cd scripts/
 ```
 
 ## Training and Evaluation
-#### Supervised Learning
+### Supervised Learning
 Train 5 folds of each architecture
 ```bash
 cd <root>
@@ -58,13 +58,13 @@ Run archiecture selection using
 cd <root>
 ./scripts/run_arch_selection.sh <batch_size>
 ```
-#### Ablation Study for Semixup's regularizers
+### Ablation Study for Semixup's regularizers
 ```bash
 cd <root>
 ./scripts/run_ablation_losses.sh <n_labels_per_klg> # 100 or 500
 ```
 
-#### Semi-Supervised Learning Methods
+### Semi-Supervised Learning Methods
 You can run a common command for training _Semixup_ or other SSL baselines.
 
 Method name can be either `semixup`, `mixmatch`, `ict`, `pimodel` (with case-sensitive).
@@ -74,7 +74,7 @@ cd <root>
 ./scripts/run_ssl.sh <n_labels_per_klg> <method_name> <comment>
 ```
 
-#### SL and SSL Comparisons
+### SL and SSL Comparisons
 The evaluation to compare best SL and SSL models were independently done on MOST data. 
 
 You need to prepare an intermediate file of the best models by
@@ -84,11 +84,11 @@ python prepare_models_eval.py
 ```
 then run evaluation using either `eval.py` or `eval_with_ci.py`. Please check those files for appropriate arguments.
 
-#### Statistical Tests
-##### Mixed-effects model
+### Statistical Tests
+#### Mixed-effects model
 File `mixed_effects_models.py` in `scripts/significance_tests/` aims to prepare data for running generalized mixed-effects in R.
 
-##### One-sided Wilcoxon Signed-rank Test 
+#### One-sided Wilcoxon Signed-rank Test 
 Code for Wilcoxon test is also in `scripts/significance_tests/`.
 You first need to prepare data using the `prepare_data.py` file, then run `wilcoxon_test.py`.
 
