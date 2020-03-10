@@ -104,7 +104,7 @@ You first need to prepare data using the `prepare_data.py` file, then run `wilco
 Download the zip file at [link](https://login.microsoftonline.com/9f9ce49a-5101-4aa3-8c75-0d5935ad6525/oauth2/authorize?client_id=00000003-0000-0ff1-ce00-000000000000&response_mode=form_post&protectedtoken=true&response_type=code%20id_token&resource=00000003-0000-0ff1-ce00-000000000000&scope=openid&nonce=50CE31E11C0D7C803D197586882F66E3E9F7007ECCFDAE62-375C0C7C640D48F6875F80867DFFA3C4FB0EC062D9DA64727134CAEEDCFFF282&redirect_uri=https:%2F%2Funioulu-my.sharepoint.com%2F_forms%2Fdefault.aspx&wsucxt=1&cobrandid=11bd8083-87e0-41b5-bb78-0bc43c8a8e8a&client-request-id=96343d9f-20d7-a000-c15b-09bcbc4f73d8).
 
 ## Citation
-Please cite the paper below if you use find repo useful.
+Please cite the paper below if you find repo useful.
 ```
 @article{nguyen2020textit,
   title={Semixup: In-and Out-of-Manifold Regularization for Deep Semi-Supervised Knee Osteoarthritis Severity Grading from Plain Radiographs},
