@@ -9,9 +9,10 @@ Implementation of the paper (https://arxiv.org/abs/2003.01944),
 ## Introduction
 _Semixup_ is a semi-supervised learning method based on in/out-of-manifold regularization. In the task of automatic grading Kellgren-Lawrence (KL) score for knee osteoathritis diagnosis, Semixup shows its data-efficiency as achieving a comparable performance with over 12 times less labeled data than a well-tuned SL requires.
 
+![Semixup](https://github.com/MIPT-Oulu/semixup/blob/master/docs/semixup.png "Semixup")
+
 ![Knee OA samples](https://github.com/MIPT-Oulu/semixup/blob/master/docs/kneeoa_samples.png "Knee OA samples")
 
-![Semixup](https://github.com/MIPT-Oulu/semixup/blob/master/docs/semixup.png "Semixup")
 
 ## Setup
 Create a virtual environment using `conda`
