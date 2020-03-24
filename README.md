@@ -107,10 +107,11 @@ Download the zip file at [link](https://login.microsoftonline.com/9f9ce49a-5101-
 ## Citation
 Please cite the paper below if you find repo useful.
 ```
-@article{nguyen2020textit,
+@article{hoang2020semixup,
   title={Semixup: In-and Out-of-Manifold Regularization for Deep Semi-Supervised Knee Osteoarthritis Severity Grading from Plain Radiographs},
-  author={Nguyen, Huy Hoang and Saarakkala, Simo and Blaschko, Matthew and Tiulpin, Aleksei},
-  journal={arXiv preprint arXiv:2003.01944},
+  author={Hoang Nguyen, Huy and Saarakkala, Simo and Blaschko, Matthew and Tiulpin, Aleksei},
+  journal={arXiv},
+  pages={arXiv--2003},
   year={2020}
 }
 ```
