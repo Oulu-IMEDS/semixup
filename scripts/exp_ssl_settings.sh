@@ -8,6 +8,7 @@ MODEL_NAME=$5
 METHOD_NAME=$6
 DATA_DIR=$7
 REMOVED_LOSSES=$8 # for Semixup only. Value: 1, 2, or 3. String not including them 3 means to use all regularizers.
+SEED=$9
 
 let T1=${N_DATA}
 let T2=${N_DATA}*2
@@ -28,6 +29,6 @@ echo "-------------- $b ---------- "
 
 for N_UDATA in $T1 $T2 $T3 $T4 $T5 $T6 $T0
 do
-  echo "Run ./scripts/train.sh ${FOLD} ${BATCH_SIZE} ${N_DATA} ${N_UDATA} ${MODEL_NAME} 32 ${N_BATCHES} ${METHOD_NAME} ${COMMENT} ${DATA_DIR} ${REMOVED_LOSSES}"
-  ./scripts/train_ssl.sh ${FOLD} ${BATCH_SIZE} ${N_DATA} ${N_UDATA} ${MODEL_NAME} 32 ${N_BATCHES} ${METHOD_NAME} ${COMMENT} ${DATA_DIR} ${REMOVED_LOSSES}
+  echo "Run ./scripts/train.sh ${FOLD} ${BATCH_SIZE} ${N_DATA} ${N_UDATA} ${MODEL_NAME} 32 ${N_BATCHES} ${METHOD_NAME} ${COMMENT} ${DATA_DIR} ${REMOVED_LOSSES} ${SEED}"
+  ./scripts/train_ssl.sh ${FOLD} ${BATCH_SIZE} ${N_DATA} ${N_UDATA} ${MODEL_NAME} 32 ${N_BATCHES} ${METHOD_NAME} ${COMMENT} ${DATA_DIR} ${REMOVED_LOSSES} ${SEED}
 done

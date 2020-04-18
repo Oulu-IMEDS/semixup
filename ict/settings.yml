@@ -25,10 +25,10 @@ eval:
         - "target"
         - "name"
 
-    unlabeled_eval:
-      cate: MixUpSampler
-      num_samples: 1
-      data_key: "mixup_data"
-      target_key:
-        - "logits_mixup"
-        - "name"
+#    unlabeled_eval:
+#      cate: MixUpSampler
+#      num_samples: 1
+#      data_key: "mixup_data"
+#      target_key:
+#        - "logits_mixup"
+#        - "name"

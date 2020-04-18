@@ -103,6 +103,10 @@ if __name__ == "__main__":
     optim = optim.Adam(model.parameters(), lr=args.lr, weight_decay=args.wd, betas=(args.beta1, 0.999))
 
     summary_writer = SummaryWriter(logdir=log_dir, comment=comment)
+
+    with open(os.path.join(summary_writer.logdir, "args.pkl"), 'wb') as f:
+        pickle.dump(args, f)
+
     model_dir = os.path.join(summary_writer.logdir, args.model_dir)
     if not os.path.exists(model_dir):
         os.mkdir(model_dir)

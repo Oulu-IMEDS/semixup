@@ -18,8 +18,8 @@ def ict_data_provider(model, alpha, n_classes, train_labeled_data, train_unlabel
                                                  transform=transforms[1], parse_item_cb=parse_item, batch_size=bs,
                                                  num_workers=num_threads, root=root, shuffle=False)
 
-    item_loaders["unlabeled_eval"] = MixUpSampler(meta_data=val_unlabeled_data, name='u_mixup', alpha=alpha, model=model,
-                                                 transform=transforms[1], parse_item_cb=parse_item, batch_size=bs,
-                                                 num_workers=num_threads, root=root, shuffle=False)
+    # item_loaders["unlabeled_eval"] = MixUpSampler(meta_data=val_unlabeled_data, name='u_mixup', alpha=alpha, model=model,
+    #                                              transform=transforms[1], parse_item_cb=parse_item, batch_size=bs,
+    #                                              num_workers=num_threads, root=root, shuffle=False)
 
     return DataProvider(item_loaders)

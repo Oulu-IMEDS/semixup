@@ -550,7 +550,7 @@ def load_oai_most_datasets(root, img_dir, save_meta_dir, saved_patch_dir, output
         df_all['ID'] = df_all['ID'].astype(str)
         df_all.to_csv(os.path.join(save_meta_dir, output_filename), index=False, sep='|')
     else:
-        df_all = pd.read_csv(os.path.join(save_meta_dir, output_filename), sep='|')
+        df_all = pd.read_csv(os.path.join(save_meta_dir, output_filename), sep='|', low_memory=False)
     return df_all
 
 
