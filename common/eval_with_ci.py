@@ -4,20 +4,17 @@ from tqdm import tqdm
 import pandas as pd
 import numpy as np
 import argparse
-import pickle
+import dill as pickle
 
 from tensorboardX import SummaryWriter
 from collagen.data import ItemLoader
 from collagen.metrics import BalancedAccuracyMeter, KappaMeter, MSEMeter
 from collagen.core.utils import auto_detect_device, to_cpu
 from sklearn.metrics import roc_curve, auc, average_precision_score
-from collagen.callbacks.visualizer import ConfusionMatrixVisualizer
-from collagen.metrics import plot_confusion_matrix
-from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from common.networks import *
 from semixup.utils import parse_item, init_transform_wo_aug
 from common.networks import make_model
-from ssgan.utils import load_oai_most_datasets
+from common.oai_most import load_oai_most_datasets
 
 device = auto_detect_device()
 
@@ -36,21 +33,12 @@ def init_args():
     parser.add_argument('--reload_data', action='store_true', help='Whether reload data')
     parser.add_argument('--num_threads', type=int, default=0, help='Number of threads for data loader')
     parser.add_argument('--bs', type=int, default=40, help='Batch size')
-    parser.add_argument('--d_model', type=str, default="attn1", help='Discriminator model name')
     parser.add_argument('--log_dir', type=str, default=None, help='Log directory')
-    parser.add_argument('--comment', type=str, default="semixup", help='Comment')
-    parser.add_argument('--seed', type=int, default=12345, help='Random seed')
     parser.add_argument('--most_names_file', type=str, default="./data/most_meta/MOST_names.csv", help='Path of file of MOST names')
     parser.add_argument('--exp_meta_file', type=str, default='./results/exp_amounts_labels_unlabels.csv',
                         help='Path of experimental meta file')
-    parser.add_argument('--out_file', type=str, default='./results/exp_amounts_labels_unlabels_most.csv',
-                        help='Path of output experimental file')
-    parser.add_argument('--model_col_name', type=str, default='D.kappa_filename', help='Column name of model path')
-    parser.add_argument('--out_dir', type=str, default='results/cm', help='Output directory')
+    parser.add_argument('--model_col_name', type=str, default='kappa_acc_filename', help='Column name of model path')
     args = parser.parse_args()
-
-    torch.manual_seed(args.seed)
-    np.random.seed(args.seed)
 
     return args
 
@@ -113,13 +101,12 @@ if __name__ == "__main__":
     save_servere_wrong_predictions = True
     if save_servere_wrong_predictions:
         from scipy.special import softmax
-        import cv2
 
     model_name_map = {'alekseiAP': 'aleksei_attn'}
     input_meta_results_fullname = args.exp_meta_file
     output_meta_results_fullname = input_meta_results_fullname[:-4] + "_result.csv"
     print('Save to {}'.format(output_meta_results_fullname))
-    # list_list_pas = ['PA05', 'PA10', 'PA15', ['PA05', 'PA10', 'PA15']]
+
     list_list_pas = ['PA10']
 
     method_name = ''
@@ -166,7 +153,7 @@ if __name__ == "__main__":
         else:
             d_model_name = conf['d_model']
         print('Create model: .{}.'.format(d_model_name))
-        # d_model = DisCustomVGGAux(nc=1, ndf=32, n_cls=5).to(device)
+
         n_cls = 5
 
         d_model = make_model(model_name=d_model_name, nc=1, ndf=32, n_cls=n_cls).to(device)
@@ -177,8 +164,9 @@ if __name__ == "__main__":
         model_map['kappa_acc'] = os.path.join(conf['root_path'], 'saved_models', conf[args.model_col_name])
 
         for md in model_map:
-
-            d_model.load_state_dict(torch.load(model_map[md]), strict=False)
+            print(f'Loading model {model_map[md]}')
+            with open(model_map[md], 'rb') as f:
+                d_model.load_state_dict(pickle.load(f), strict=False)
             print("Processing {} with {} by best {}...".format(pa, comment, md))
 
             ds_most_filtered = filter_most_by_pa(ds_most, df_most_ex, pa)
@@ -329,9 +317,7 @@ if __name__ == "__main__":
             conf['ap_ci_ub'] = ap_ci_u
             conf['ap_test'] = ap_test
 
-        # all_preds_cls.append(pred_cls)
         eval_rows.append(conf)
-    # all_preds_cls.stack(all_preds_cls, axis=1)
 
     output_pickle_meta_results_fullname = output_meta_results_fullname[:-4] + ".pkl"
     with open(output_pickle_meta_results_fullname, "bw") as f:

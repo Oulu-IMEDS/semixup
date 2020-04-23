@@ -226,9 +226,9 @@ if __name__ == "__main__":
     if not os.path.exists(args.save_img_dir):
         os.makedirs(args.save_img_dir)
 
-    #seeds: 80122, 66371, 39333, 67462, 77665
+    #seeds: 80122, 66371, 39333, 67462, 77665 90529 83927 80589 47559
 
-    list_labeled_data = [50, 100, 500, 1000, 1500, 2000, 3000]
+    list_labeled_data = [3000, 2000, 1000, 500, 100, 50]
 
     n_folds = 5
     # u_ts = range(7)
