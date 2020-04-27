@@ -81,7 +81,7 @@ if __name__ == "__main__":
     if args.pretrained_model and os.path.isfile(args.pretrained_model):
         model.load_state_dict(torch.load(args.pretrained_model), strict=False)
 
-    crit = Loss(cons_coef=2, mixup_coef=4, cons_mixup_coef=2, use_cons=True, elim_loss=args.removed_losses).to(device)
+    crit = Loss(in_mnf_coef=args.in_mnf_coef, ic_coef=args.ic_coef, in_out_mnf_coef=args.in_out_mnf_coef, use_cons=True, elim_loss=args.removed_losses).to(device)
 
     for i in range(args.fold_index):
         train_labeled_data, val_labeled_data, train_unlabeled_data, val_unlabeled_data = next(splitter_train)
@@ -113,10 +113,9 @@ if __name__ == "__main__":
 
     # Callbacks
     callbacks_train = (RunningAverageMeter(prefix='train', name='loss_cls'),
-                       RunningAverageMeter(prefix='train', name='loss_cons'),
-                       RunningAverageMeter(prefix='train', name='loss_cons_mixup'),
-                       RunningAverageMeter(prefix='train', name='loss_cons_aug_mixup'),
-                       RunningAverageMeter(prefix='train', name='loss_mixup'),
+                       RunningAverageMeter(prefix='train', name='loss_in_mnf'),
+                       RunningAverageMeter(prefix='train', name='loss_in_out_mnf'),
+                       RunningAverageMeter(prefix='train', name='loss_ic'),
                        MeterLogging(writer=summary_writer),
                        ProgressbarVisualizer(update_freq=10),
                        BalancedAccuracyMeter(prefix="train", name="acc", parse_target=parse_target_accuracy_meter,
@@ -129,10 +128,6 @@ if __name__ == "__main__":
                                                  tag="train/confusion_matrix"))
 
     callbacks_eval = (RunningAverageMeter(prefix='eval', name='loss_cls'),
-                      RunningAverageMeter(prefix='eval', name='loss_cons'),
-                      RunningAverageMeter(prefix='eval', name='loss_cons_mixup'),
-                      RunningAverageMeter(prefix='eval', name='loss_cons_aug_mixup'),
-                      RunningAverageMeter(prefix='eval', name='loss_mixup'),
                       BalancedAccuracyMeter(prefix="eval", name="acc", parse_target=parse_target_accuracy_meter,
                                             cond=cond_accuracy_meter),
                       KappaMeter(prefix='eval', name='kappa', parse_target=parse_class, parse_output=parse_class,

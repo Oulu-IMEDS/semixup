@@ -8,7 +8,7 @@ from collagen.core.utils import to_cpu
 
 
 class Loss(Module):
-    def __init__(self, cons_coef=2.0, cons_mode='mse', mixup_coef=2.0, cons_mixup_coef=4.0, use_cons=False, elim_loss=""):
+    def __init__(self, in_mnf_coef=2.0, cons_mode='mse', ic_coef=2.0, in_out_mnf_coef=4.0, use_cons=False, elim_loss=""):
         super().__init__()
         self.__cons_mode = cons_mode
         if cons_mode == 'mse':
@@ -18,13 +18,13 @@ class Loss(Module):
 
         self.__loss_cls = CrossEntropyLoss(reduction='sum')
 
-        self.__cons_coef = cons_coef
-        self.__losses = {'loss_cls': None, 'loss_cons': None}
+        self.__in_mnf_coef = in_mnf_coef
+        self.__losses = {'loss_cls': None, 'loss_in_mnf': None}
 
         self.__use_cons = use_cons
         self.__n_minibatches = 1.0
-        self.__mixup_coef = mixup_coef
-        self.__cons_mixup_coef = cons_mixup_coef
+        self.__ic_coef = ic_coef
+        self.__in_out_mnf_coef = in_out_mnf_coef
 
         self._elim_loss = elim_loss
 
@@ -33,7 +33,7 @@ class Loss(Module):
         else:
             print('[INFO] Semixup uses all regularizers.')
 
-        if use_cons and mixup_coef is None:
+        if use_cons and ic_coef is None:
             raise ValueError('Must input coefficient of consistency')
 
         self.__n_aug = 1
@@ -105,27 +105,25 @@ class Loss(Module):
             device = loss_mixup.device
             self.__losses['loss'] = torch.tensor([0], dtype=torch.float32).to(device)
             if "1" in self._elim_loss:
-                self.__losses['loss_cons'] = None
+                self.__losses['loss_in_mnf'] = None
             else:
-                self.__losses['loss_cons'] = self.__cons_coef * loss_cons_aug / (
+                self.__losses['loss_in_mnf'] = self.__in_mnf_coef * loss_cons_aug / (
                         self.__n_minibatches * n_minibatch_size)
-                self.__losses['loss'] += self.__losses['loss_cons']
+                self.__losses['loss'] += self.__losses['loss_in_mnf']
 
             if "2" in self._elim_loss:
-                self.__losses['loss_mixup'] = None
+                self.__losses['loss_ic'] = None
             else:
-                self.__losses['loss_mixup'] = self.__mixup_coef * loss_mixup / (self.__n_minibatches * n_minibatch_size)
-                self.__losses['loss'] += self.__losses['loss_mixup']
+                self.__losses['loss_ic'] = self.__ic_coef * loss_mixup / (self.__n_minibatches * n_minibatch_size)
+                self.__losses['loss'] += self.__losses['loss_ic']
 
             if "3" in self._elim_loss:
-                self.__losses['loss_cons_mixup'] = None
-                self.__losses['loss_cons_aug_mixup'] = None
+                self.__losses['loss_in_out_mnf'] = None
             else:
-                self.__losses['loss_cons_mixup'] = self.__cons_mixup_coef * loss_cons_mixup / (
+                self.__losses['loss_in_out_mnf'] = self.__in_out_mnf_coef * (loss_cons_mixup + loss_cons_aug_mixup) / (
                         self.__n_minibatches * n_minibatch_size)
-                self.__losses['loss_cons_aug_mixup'] = self.__cons_mixup_coef * loss_cons_aug_mixup / (
-                        self.__n_minibatches * n_minibatch_size)
-                self.__losses['loss'] += self.__losses['loss_cons_mixup'] + self.__losses['loss_cons_aug_mixup']
+                
+                self.__losses['loss'] += self.__losses['loss_in_out_mnf']
 
             self.__losses['loss_cls'] = None
         elif target['name'] == 'l_mixup':
@@ -134,23 +132,15 @@ class Loss(Module):
             alpha = target['alpha']
 
             loss_cls = alpha * self.__loss_cls(pred, target_cls1) + (1 - alpha) * self.__loss_cls(pred, target_cls2)
-
-            self.__losses['loss_cons_aug_mixup'] = None
-            self.__losses['loss_cons'] = None
-            self.__losses['loss_mixup'] = None
-            self.__losses['loss_cons_mixup'] = None
             self.__losses['loss_cls'] = loss_cls / (self.__n_minibatches * n_minibatch_size)
             self.__losses['loss'] = self.__losses['loss_cls']
+            self.__losses['loss_ic'] = self.__losses['loss_in_mnf'] = self.__losses['loss_in_out_mnf'] = None
         elif target['name'] == 'l_norm':
             target_cls = target['target'].type(torch.int64)
             loss_cls = self.__loss_cls(pred, target_cls)
-
-            self.__losses['loss_cons_aug_mixup'] = None
-            self.__losses['loss_cons'] = None
-            self.__losses['loss_mixup'] = None
-            self.__losses['loss_cons_mixup'] = None
             self.__losses['loss_cls'] = loss_cls / (self.__n_minibatches * n_minibatch_size)
             self.__losses['loss'] = self.__losses['loss_cls']
+            self.__losses['loss_ic'] = self.__losses['loss_in_mnf'] = self.__losses['loss_in_out_mnf'] = None
         else:
             raise ValueError("Not support target name {}".format(target['name']))
 
