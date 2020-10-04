@@ -1,8 +1,12 @@
 # _Semixup_
 
-By Huy Hoang Nguyen, Simo Saarakkala, Matthew Blaschko, and Aleksei Tiulpin.
+By Huy Hoang Nguyen, Simo Saarakkala, Matthew B. Blaschko, and Aleksei Tiulpin.
 
-Implementation of the paper (https://arxiv.org/abs/2003.01944),
+Implementation of the paper Semixup that was accepted to **IEEE Transactions on Medical Imaging** in August 2020. 
+
+IEEE Open Access: https://ieeexplore.ieee.org/document/9169719
+
+Arxiv: https://arxiv.org/abs/2003.01944
 
 (c) Huy Hoang Nguyen, University of Oulu, Finland.
 
@@ -107,12 +111,12 @@ Download the zip file at [link](https://login.microsoftonline.com/9f9ce49a-5101-
 ## Citation
 Please cite the paper below if you find repo useful.
 ```
-@article{hoang2020semixup,
-  title={Semixup: In-and Out-of-Manifold Regularization for Deep Semi-Supervised Knee Osteoarthritis Severity Grading from Plain Radiographs},
-  author={Hoang Nguyen, Huy and Saarakkala, Simo and Blaschko, Matthew and Tiulpin, Aleksei},
-  journal={arXiv},
-  pages={arXiv--2003},
-  year={2020}
+@article{Nguyen2020SemixupIA,
+  title={Semixup: In- and Out-of-Manifold Regularization for Deep Semi-Supervised Knee Osteoarthritis Severity Grading from Plain Radiographs},
+  author={Huy Hoang Nguyen and S. Saarakkala and M. Blaschko and A. Tiulpin},
+  journal={IEEE transactions on medical imaging},
+  year={2020},
+  volume={PP}
 }
 ```
 
