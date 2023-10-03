@@ -6,7 +6,7 @@
 from setuptools import setup, find_packages
 
 requirements = (
-    'numpy', 'opencv-python', 'Pillow==6.1', 'matplotlib', 'solt==0.1.8', 'torch==1.2.0', 'torchvision==0.4.1', 'tqdm', 'scikit-learn==0.20.4', 'pandas==0.24.1', 'collagen',
+    'numpy', 'opencv-python', 'Pillow==10.0.1', 'matplotlib', 'solt==0.1.8', 'torch==1.2.0', 'torchvision==0.4.1', 'tqdm', 'scikit-learn==0.20.4', 'pandas==0.24.1', 'collagen',
     'tensorboardX', 'sas7bdat', 'dill', 'pyyaml')
 
 setup_requirements = ()
